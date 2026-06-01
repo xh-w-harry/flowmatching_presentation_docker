@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: ./src/backend
+    ports:
+      - "6052:6052"
+    environment:
+      APP_ROOT: /app
+      MODEL_PATH: /app/models/best_fm_multimodal.pth
+      RUN_ROOT: /app/runs
+      CORS_ALLOW_ORIGINS: "*"
+    volumes:
+      - ./models:/app/models:ro
+      - ./runs:/app/runs
+
+  frontend:
+    build:
+      context: ./src/frontend
+    ports:
+      - "6051:80"
+    depends_on:
+      - backend

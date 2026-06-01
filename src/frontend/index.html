@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Directional Borehole Inference</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel">
+        <div class="header">
+          <div>
+            <h1>3D Geology Inference</h1>
+            <p>上传真实钻孔数据作为推理条件。GeoData 仅用于最后评估，重力和地磁为可选输入。</p>
+          </div>
+          <button id="healthBtn" type="button">检查服务</button>
+        </div>
+
+        <form id="inferForm">
+          <div class="grid upload-grid">
+            <label>
+              <span>Borehole .npy</span>
+              <input name="borehole_file" type="file" accept=".npy" required />
+            </label>
+            <label>
+              <span>GeoData .npy</span>
+              <input name="geo_file" type="file" accept=".npy" required />
+            </label>
+            <label>
+              <span>Gravity .npy 可选</span>
+              <input name="gravity_file" type="file" accept=".npy" />
+            </label>
+            <label>
+              <span>Magnetics .npy 可选</span>
+              <input name="magnetics_file" type="file" accept=".npy" />
+            </label>
+          </div>
+
+          <div class="grid compact">
+            <label>
+              <span>NUM_CLASSES</span>
+              <input id="numClasses" type="number" min="2" value="15" required />
+            </label>
+            <label>
+              <span>NUM_GENERATIONS</span>
+              <input id="numGenerations" type="number" min="1" value="20" required />
+            </label>
+            <label>
+              <span>ODE steps</span>
+              <input id="odeSteps" type="number" min="1" value="50" required />
+            </label>
+          </div>
+
+          <div class="grid compact">
+            <label>
+              <span>Bounds JSON</span>
+              <input id="bounds" value="[[-160,160],[-160,160],[-160,160]]" required />
+            </label>
+            <label>
+              <span>默认水平角 0-360</span>
+              <input id="azimuth" type="number" min="0" max="360" value="120" required />
+            </label>
+            <label>
+              <span>默认纵向角 0-180</span>
+              <input id="vertical" type="number" min="0" max="180" value="90" required />
+            </label>
+          </div>
+
+          <section class="boreholes">
+            <div class="section-title">
+              <h2>钻孔位置与角度（可选元数据）</h2>
+              <button id="addBorehole" type="button">X: Y: +</button>
+            </div>
+            <div id="boreholeList" class="borehole-list"></div>
+          </section>
+
+          <div class="actions">
+            <button id="submitBtn" type="submit">开始推理</button>
+            <button id="cancelBtn" class="secondary" type="button" disabled>终止任务</button>
+            <span id="status"></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>结果</h2>
+        <pre id="resultBox">等待提交。</pre>
+        <div id="downloads" class="downloads"></div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
